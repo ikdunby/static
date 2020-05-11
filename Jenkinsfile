@@ -2,15 +2,11 @@ pipeline {
     agent any
     stages {
        stage('Upload to AWS') {
-             steps {
-                 
-                 s3Upload(file:'index.html', bucket:'udacity.jenkins', path:'index.html')
-                 sh 'echo "Uploaded the file"'
-                 sh '''
-                     echo "Multiline shell blablabla"
-                     ls -lah
-                     '''
-             }
+              steps {
+                  withAWS(region:'us-east-1',credentials:'aws-static') {
+                  sh 'echo "Uploading content with AWS creds"'
+                      s3Upload(pathStyleAccessEnabled: true, payloadSigningEnabled: true, file:'index.html', bucket:'udacity.jenkins')
+                  }
         }
     }
 }
