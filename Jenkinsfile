@@ -1,9 +1,11 @@
 pipeline {
     agent any
     stages {
-       stage('Build') {
+       stage('Upload to AWS') {
              steps {
-                 sh 'echo "Hello World"'
+                 
+                 s3Upload(file:'index.html', bucket:'udacity.jenkins', path:'index.html')
+                 sh 'echo "Uploaded the file"'
                  sh '''
                      echo "Multiline shell blablabla"
                      ls -lah
